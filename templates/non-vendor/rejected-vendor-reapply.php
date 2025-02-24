@@ -1,0 +1,65 @@
+<?php
+/**
+
+ */
+if (!defined('ABSPATH')) {
+    // Exit if accessed directly
+    exit;
+}
+global $WCMb;
+
+if(!is_user_wcmb_rejected_vendor(get_current_vendor_id())) {
+	if(is_user_wcmb_pending_vendor(get_current_vendor_id())) {
+		?>
+		<div class="row">
+            <div class="col-md-12 text-center">
+				<div class="panel wcmb-pending-vendor-notice">
+					<?php echo apply_filters( 'wcmb_pending_vendor_dashboard_message', __('Congratulations! You have successfully applied as a Vendor. Please wait for further notifications from the admin.', 'MB-multivendor') ); ?>
+				</div>
+			</div>
+        </div>
+        <?php
+        return;
+	}
+	return;
+}
+
+$wcmb_vendor_registration_form_data = get_option('wcmb_vendor_registration_form_data');
+$form_data = array();
+if(isset($wcmb_vendor_registration_form_data) && is_array($wcmb_vendor_registration_form_data)) {
+	$vendor_application_data = get_user_meta(get_current_user_id(), 'wcmb_vendor_fields', true);
+	foreach($wcmb_vendor_registration_form_data as $key => $value) {
+		if( !empty( $vendor_application_data ) ) {
+			foreach($vendor_application_data as $app_key => $app_value) {
+				if($value['type'] == $app_value['type'] && $value['label'] == $app_value['label'] && isset($app_value['value'])) {
+					$form_data[$key]['value'] = $app_value['value'];
+				}
+			}
+		}
+	}
+}
+
+?>
+<div class="col-md-12">
+	<form method="post" name="reapply_vendor_application_form" class="reapply_vendor_application_form form-horizontal" enctype="multipart/form-data">
+		<?php do_action('wcmb_before_reapply_vendor_application_form'); ?>
+			<div class="panel panel-default pannel-outer-heading">
+				<div class="panel-heading">
+					<h3><?php _e('Previously Submitted Details', 'MB-multivendor'); ?></h3>
+				</div>
+				<div class="panel-body panel-content-padding">
+					<div class="wcmb_regi_form_box">
+						<?php
+							$WCMb->template->get_template('vendor_registration_form.php', array('wcmb_vendor_registration_form_data' => $wcmb_vendor_registration_form_data, 'form_data' => array('wcmb_vendor_fields' => $form_data)));
+						?>
+						<div class="clearboth"></div>
+					</div>
+				</div>
+			</div>
+		<?php do_action('wcmb_after_reapply_vendor_application_form'); ?>
+		<div class="wcmb-action-container">
+			<button class="btn btn-default" name="reapply_vendor_application"><?php _e('Apply Again!!', 'MB-multivendor'); ?></button>
+			<div class="clear"></div>
+		</div>
+	</form>
+</div>
