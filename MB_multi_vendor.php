@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name: MB Multivendor
+ * Plugin Name: WP Multivendor
  * Description: its a extension That Transforms Your WooCommerce Site into a Marketplace with multivendor.
- * Author: MAGE BAZAR
+ * Author: NGOUMA TIMOTHEE FREDY
  * Version: 1.0
- * Author URI: https://www.magebazar.com/
+ * Author URI: 
  * Text Domain: MB-multivendor
  * Domain Path: /languages/
  */
